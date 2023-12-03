@@ -10,6 +10,20 @@ public class Predio {
         System.out.println("9 - Encerra programa");
     }
 
+    static void clearScreen() {
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (final Exception e) {
+            System.out.println("Erro ao tentar limpar a tela: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Elevador elevador = new Elevador(10, 20);
 
@@ -17,6 +31,8 @@ public class Predio {
         while (!sai) {
             Scanner prompt = new Scanner(System.in);
             int op, pessoas, andar;
+
+            clearScreen();  // Limpa a tela antes de cada iteração
 
             elevador.painel();
             menu();
@@ -40,6 +56,7 @@ public class Predio {
                     System.out.println("Para qual andar?");
                     andar = prompt.nextInt();
                     elevador.goTo(andar);
+                    clearScreen();  // Limpa a tela após movimentar o elevador
                     break;
                 case 9:
                     sai = true;
@@ -50,5 +67,7 @@ public class Predio {
                     break;
             }
         }
+
+        clearScreen();  // Limpa a tela ao finalizar o programa
     }
 }
